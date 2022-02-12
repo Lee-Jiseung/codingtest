@@ -1,55 +1,44 @@
 #include <string>
 #include <vector>
+#include <deque>
 
 using namespace std;
 
 vector<int> solution(vector<string> info, vector<string> query) {
-    
-    vector<pair<int, int>> v(info.size(), {0,0});
 
+    vector<vector<int>> v(3 * 2 * 2 * 2, vector<int>());
     for (int i = 0; i < info.size(); i++) {
         int flag = 1;
         int count = 0;
         string temp = "";
-        
+        int index = 0;
+
         for (int j = 0; j < info[i].length(); j++) {
             if (flag == 1) {
                 if (count == 0) {
-                    if (info[i][j] == 'c') {
-                        v[i].first += (1<<8);
-                    }
-                    else if (info[i][j] == 'j') {
-                        v[i].first += (1<<7);
+                    if (info[i][j] == 'j') {
+                        index += 8;
                     }
                     else if (info[i][j] == 'p') {
-                        v[i].first += (1<<6);
+                        index += 16;
                     }
                     flag = 0;
                 }
                 else if (count == 1) {
-                    if (info[i][j] == 'b') {
-                        v[i].first += (1<<5);
-                    }
-                    else if (info[i][j] == 'f') {
-                        v[i].first += (1<<4);
+                    if (info[i][j] == 'f') {
+                        index += 4;
                     }
                     flag = 0;
                 }
                 else if (count == 2) {
-                    if (info[i][j] == 'j') {
-                        v[i].first += (1<<3);
-                    }
-                    else if (info[i][j] == 's') {
-                        v[i].first += (1<<2);
+                    if (info[i][j] == 's') {
+                        index += 2;
                     }
                     flag = 0;
                 }
                 else if (count == 3) {
-                    if (info[i][j] == 'c') {
-                        v[i].first += (1<<1);
-                    }
-                    else if (info[i][j] == 'p') {
-                        v[i].first += (1<<0);
+                    if (info[i][j] == 'p') {
+                        index += 1;
                     }
                     flag = 0;
                 }
@@ -64,53 +53,102 @@ vector<int> solution(vector<string> info, vector<string> query) {
                 }
             }
         }
-        v[i].second = stoi(temp);
+        v[index].push_back(stoi(temp));
     }
-    
-    vector<pair<int, int>> v2(query.size(), {0, 0});
+
+
+    vector<int> answer;
     for (int i = 0; i < query.size(); i++) {
         int flag = 1;
         int count = 0;
         string temp = "";
+        deque<int> d;
 
         for (int j = 0; j < query[i].length(); j++) {
             if (flag == 1) {
                 if (count == 0) {
                     if (query[i][j] == 'c') {
-                        v2[i].first += (1<<8);
+                        d.push_back(0);
                     }
                     else if (query[i][j] == 'j') {
-                        v2[i].first += (1<<7);
+                        d.push_back(8);
                     }
                     else if (query[i][j] == 'p') {
-                        v2[i].first += (1<<6);
+                        d.push_back(16);
+                    }
+                    else {
+                        d.push_back(0);
+                        d.push_back(8);
+                        d.push_back(16);
                     }
                     flag = 0;
                 }
                 else if (count == 2) {
+                    int ds = d.size();
                     if (query[i][j] == 'b') {
-                        v2[i].first += (1<<5);
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 0);
+                            d.pop_front();
+                        }
                     }
                     else if (query[i][j] == 'f') {
-                        v2[i].first += (1<<4);
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 4);
+                            d.pop_front();
+                        }
+                    }
+                    else {
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 0);
+                            d.push_back(d.front() + 4);
+                            d.pop_front();
+                        }
                     }
                     flag = 0;
                 }
                 else if (count == 4) {
+                    int ds = d.size();
                     if (query[i][j] == 'j') {
-                        v2[i].first += (1<<3);
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 0);
+                            d.pop_front();
+                        }
                     }
                     else if (query[i][j] == 's') {
-                        v2[i].first += (1<<2);
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 2);
+                            d.pop_front();
+                        }
+                    }
+                    else {
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 0);
+                            d.push_back(d.front() + 2);
+                            d.pop_front();
+                        }
                     }
                     flag = 0;
                 }
                 else if (count == 6) {
+                    int ds = d.size();
                     if (query[i][j] == 'c') {
-                        v2[i].first += (1<<1);
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 0);
+                            d.pop_front();
+                        }
                     }
                     else if (query[i][j] == 'p') {
-                        v2[i].first += (1<<0);
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 1);
+                            d.pop_front();
+                        }
+                    }
+                    else {
+                        for (int k = 0; k < ds; k++) {
+                            d.push_back(d.front() + 0);
+                            d.push_back(d.front() + 1);
+                            d.pop_front();
+                        }
                     }
                     flag = 0;
                 }
@@ -127,29 +165,18 @@ vector<int> solution(vector<string> info, vector<string> query) {
             }
         }
 
-        if (temp == "-") v2[i].second =-1;
-        else v2[i].second = stoi(temp);
-    }
-    
-    
-    vector<int> answer;
-    for(int i=0;i<query.size();i++) {
-        answer.push_back(0);
-        for(int k=0; k<info.size();k++) {
-            int flag = 1;
-            for(int j=0;j<9;j++) {
-                if(v2[i].first & (1<<j)) {
-                    if(!(v[k].first & (1<<j))) {
-                        flag = 0;
-                        break;
-                    }
-                }
-            }
+        int score = 0;
+        if (temp == "-") score = -1;
+        else score = stoi(temp);
 
-            if(flag == 1 && v[k].second >= v2[i].second) {
-                answer[i]++;
+        answer.push_back(0);
+        while (!d.empty()) {
+            for (int j = 0; j < v[d.front()].size(); j++) {
+                if (v[d.front()][j] >= score) answer[i]++;
             }
+            d.pop_front();
         }
     }
+
     return answer;
 }
