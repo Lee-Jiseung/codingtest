@@ -6,7 +6,7 @@ using namespace std;
 
 vector<int> solution(vector<string> info, vector<string> query) {
 
-    vector<vector<int>> v(3 * 2 * 2 * 2, vector<int>());
+    vector<vector<int>> v(3 * 2 * 2 * 2, vector<int>(100001, 0));
     for (int i = 0; i < info.size(); i++) {
         int flag = 1;
         int count = 0;
@@ -53,9 +53,14 @@ vector<int> solution(vector<string> info, vector<string> query) {
                 }
             }
         }
-        v[index].push_back(stoi(temp));
+        v[index][stoi(temp)]++;
     }
 
+    for (int i = 0; i < v.size(); i++) {
+        for (int j = v[i].size() - 2; j >= 0; j--) {
+            v[i][j] += v[i][j + 1];
+        }
+    }
 
     vector<int> answer;
     for (int i = 0; i < query.size(); i++) {
@@ -166,14 +171,12 @@ vector<int> solution(vector<string> info, vector<string> query) {
         }
 
         int score = 0;
-        if (temp == "-") score = -1;
+        if (temp == "-") score = 0;
         else score = stoi(temp);
 
         answer.push_back(0);
         while (!d.empty()) {
-            for (int j = 0; j < v[d.front()].size(); j++) {
-                if (v[d.front()][j] >= score) answer[i]++;
-            }
+            answer[i] += v[d.front()][score];
             d.pop_front();
         }
     }
