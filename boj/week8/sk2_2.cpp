@@ -6,10 +6,6 @@
 
 using namespace std;
 
-bool comp(pair<int, string> p1, pair<int, string> p2) {
-    return p1.first < p2.first;
-}
-
 vector<string> solution(vector<string> arr, vector<string> p) {
     vector<vector<int>> v(p.size(), vector<int>());
     for (int i = 0; i < p.size(); i++) { // r:0 W:1
@@ -42,7 +38,7 @@ vector<string> solution(vector<string> arr, vector<string> p) {
 
     deque<int> r;
     deque<int> w;
-    
+
     vector<string> answer;
     int seconds = 0;
     int worktime = 0;
@@ -50,23 +46,22 @@ vector<string> solution(vector<string> arr, vector<string> p) {
     int cur = 0; // r- w+
     while (true) {
         seconds++;
-       
         if (count == v.size()) break;
+
         worktime++;
-        
-        cout << seconds << ' ';
+
         for (int i = 0; i < v.size(); i++) {
-            if (v[i][v[i].size()-1] == 1 && v[i][1] <= seconds) {
+            if (v[i][v[i].size() - 1] == 1 && v[i][1] <= seconds) {
                 if (v[i][0] == 0) {
-                    v[i][v[i].size() - 1] = 0;
                     r.push_back(i);
                 }
                 else {
-                    v[i][v[i].size() - 1] = 0;
                     w.push_back(i);
                 }
+
+                v[i][v[i].size() - 1] = 0;
             }
-            else if(v[i][1] > seconds) break;
+            else if (v[i][1] > seconds) break;
         }
 
         if (cur == 0) { // 아무것도안하는중
@@ -122,4 +117,3 @@ vector<string> solution(vector<string> arr, vector<string> p) {
 
     return answer;
 }
-
