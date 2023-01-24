@@ -1,10 +1,8 @@
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.*;
-import java.util.List;
 
 public class Main {
     static BufferedWriter bw;
@@ -22,14 +20,6 @@ public class Main {
         st = new StringTokenizer(br.readLine());
         v = Integer.parseInt(st.nextToken());
         e = Integer.parseInt(st.nextToken());
-//        ArrayList<ArrayList<Point>> edges = new ArrayList<>(v);
-//        for(int i=0; i<e; i++) {
-//            st = new StringTokenizer(br.readLine());
-//            int a = Integer.parseInt(st.nextToken());
-//            int b = Integer.parseInt(st.nextToken());
-//            int c = Integer.parseInt(st.nextToken());
-//            edges.get(a-1).add(new Point(b-1, c));
-//        }
         ArrayList<Edge> edges = new ArrayList<>();
         for(int i=0; i<e; i++) {
             st = new StringTokenizer(br.readLine());
